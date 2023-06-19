@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/auth';
-import {error} from "@angular/compiler-cli/src/transformers/util";
 
 @Injectable({
   providedIn: 'root'

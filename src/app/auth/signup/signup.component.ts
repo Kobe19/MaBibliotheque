@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
-import {error} from "@angular/compiler-cli/src/transformers/util";
 
 @Component({
   selector: 'app-signup',
@@ -29,12 +28,12 @@ export class SignupComponent implements OnInit{
   }
 
   onSubmit(){
-    const email = this.signUpForm.get('email')?.value;
-    const password = this.signUpForm.get('password')?.value;
+    const email = this.signUpForm?.get('email')?.value;
+    const password = this.signUpForm?.get('password')?.value;
 
     this.authService.createNewUser(email, password).then(
       () => {
-        this.router.navigate(['/books'])
+        this.router.navigate(['/auth/signin'])
       },
       (error) => {
         this.errorMessage = error
