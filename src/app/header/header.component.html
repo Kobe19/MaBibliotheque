@@ -7,8 +7,9 @@
     </div>
     <div class="float-end">
       <div class="navbar-nav">
-        <a class="nav-link" routerLinkActive="active" aria-current="page" routerLink="auth/signup">Créer un compte</a>
-        <a class="nav-link" routerLinkActive="active" aria-current="page" routerLink="auth/signin">Connexion</a>
+        <a class="nav-link" routerLinkActive="active" aria-current="page" routerLink="auth/signup" *ngIf="!isAuth">Créer un compte</a>
+        <a class="nav-link" routerLinkActive="active" aria-current="page" routerLink="auth/signin" *ngIf="!isAuth">Connexion</a>
+        <a class="nav-link" (click)="onSignOut()" *ngIf="isAuth" style="cursor:pointer">Déconnexion</a>
       </div>
     </div>
   </div>
