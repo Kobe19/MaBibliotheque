@@ -3,6 +3,8 @@ import {Subject} from "rxjs";
 import {Book} from "../models/Book.model";
 import {HttpClient} from "@angular/common/http";
 import * as firebase from "firebase/database";
+import * as firebase2 from "firebase/storage";
+import {uploadBytesResumable} from "firebase/storage";
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +13,7 @@ export class BooksService {
 
   bookSubject = new Subject<any[]>();
   private books : Book[] = [];
+
   constructor(private httpClient:HttpClient) { }
 
   emitBooks() {
@@ -67,4 +70,34 @@ export class BooksService {
     this.saveBooks();
     this.emitBooks();
   }
+
+  uploadFile(file: File){
+    return new Promise(
+      (resolve, reject) => {
+        const storage = firebase2.getStorage()
+        const almostUniqueFileName = Date.now().toString();
+        const upload = firebase2.ref(firebase2.getStorage(), 'images/' + almostUniqueFileName + file.name);
+        const test = uploadBytesResumable(upload, file);
+
+        test.on('state_changed',
+          () => {
+            console.log('Chargement...');
+          },
+          (error) => {
+            console.log('Erreur de chargement : '+ error);
+            reject();
+          },
+          () => {
+            firebase2.getDownloadURL(test.snapshot.ref).then(
+              (downloadUrl) => {
+                resolve(downloadUrl);
+              }
+            )
+          }
+        )
+      }
+    )
+  }
+
+
 }
